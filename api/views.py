@@ -101,12 +101,14 @@ class CreateRoomView(APIView):
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
-            
+        print(request.data) 
         serializer = self.serializer_class(data=request.data)
         
         if serializer.is_valid():
+            
             guest_can_pause=serializer.data.get('guest_can_pause')
             votes_to_skip=serializer.data.get('votes_to_skip')
+            
             host=self.request.session.session_key
             queryset = Room.objects.filter(host=host)
             if queryset.exists():
